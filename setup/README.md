@@ -54,9 +54,29 @@ For GPU support (optional but recommended):
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
 
-### 4. Verify Installation
+### 4. Install from requirements.txt
 
-Run the following Python script to verify your installation:
+Install all required packages at once:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 5. Verify Installation
+
+Run our environment verification script:
+
+```bash
+python setup/verify_environment.py
+```
+
+This will check:
+- Python version
+- All required packages
+- PyTorch installation
+- CUDA availability (if applicable)
+
+Alternatively, you can manually verify with this Python script:
 
 ```python
 import torch
@@ -70,7 +90,7 @@ if torch.cuda.is_available():
     print(f"CUDA device: {torch.cuda.get_device_name(0)}")
 ```
 
-### 5. Jupyter Notebook Setup
+### 6. Jupyter Notebook Setup
 
 To use Jupyter notebooks for assignments:
 
