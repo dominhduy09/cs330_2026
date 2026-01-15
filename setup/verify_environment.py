@@ -8,6 +8,12 @@ for the CS330 course.
 
 import sys
 
+try:
+    from packaging import version as pkg_version
+    HAS_PACKAGING = True
+except ImportError:
+    HAS_PACKAGING = False
+
 
 def check_python_version():
     """Check if Python version is 3.8 or higher."""
@@ -28,8 +34,7 @@ def check_package(package_name, min_version=None):
         module = __import__(package_name)
         version = getattr(module, "__version__", "unknown")
         
-        if min_version and version != "unknown":
-            from packaging import version as pkg_version
+        if min_version and version != "unknown" and HAS_PACKAGING:
             if pkg_version.parse(version) >= pkg_version.parse(min_version):
                 print(f"✓ {package_name} {version} - OK")
                 return True
