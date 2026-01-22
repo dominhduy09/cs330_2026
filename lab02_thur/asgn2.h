@@ -1,18 +1,24 @@
 #ifndef __asgn2__
 #define __asgn2__
 
-/* the two lines above check to ensure
-we haven't already included this header*/
+/* 
+
+the two lines above check to ensure
+we haven't already included this header 
+
+*/
 
 
 /* your functions go here */
+
 // Note: main() goes in the asgn2.c file
 
 /*
+
 Collatz Conjecture
 
 n ==> even: n/2
-    odd: 3(n) + 1
+      odd: 3(n) + 1
 
     10/2    3(5) + 1    16/2    8/2    4/2    2/2    1
     5       16          8       4      2      1

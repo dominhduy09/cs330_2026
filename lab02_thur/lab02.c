@@ -2,6 +2,7 @@
 #include "asgn2.h"
 
 int main() {
+
     printf("hello, world\n");
 
     for(int i = 2; i <= 10; i++) {
@@ -10,4 +11,5 @@ int main() {
     }
 
     return 0;
+    
 }
