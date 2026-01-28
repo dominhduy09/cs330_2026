@@ -10,6 +10,8 @@ int main() {
         printCollatz(i);
     }
 
+    calculateDiscount(50.0, 15.0);
+
     return 0;
     
 }

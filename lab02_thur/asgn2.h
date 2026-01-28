@@ -48,4 +48,36 @@ void printCollatz(int n) {
     printf("\n");
 } // end printCollatz
 
+/*
+
+function calculateDiscount(price, discount)
+takes: 2 positive floats
+value: the original price and the discount percentage
+return: float, the price after applying discount
+
+*/
+void calculateDiscount(float price, float discount) {
+
+    float discountedPrice;
+    discountedPrice = price * (100 - discount) / 100;
+    printf("After applying for the original price: $%.1f with the discount of: %.1f\n", price, discount);
+    printf("The discounted price is: $%.1f\n", discountedPrice);
+
+}
+
+/*
+
+function greaterThanIndex(arrayOfNumbers, size)
+takes: an array of integers(arrayOfNumbers) and the size of the array(size, also an integer)
+return: int
+
+The function check every number's value and their indices
+Count the number of integers in the list whose value is greater than index and return total
+
+*/
+void greaterThanIndex(int arrayOfNumbers[], int size) {
+    
+}
+
+
 #endif
