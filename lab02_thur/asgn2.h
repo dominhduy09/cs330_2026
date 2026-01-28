@@ -26,9 +26,11 @@ n ==> even: n/2
 */
 
 /*
+
 descr: this function prints the Collatz sequence for n
 takes: int n, to calc the Collatz
 return: nothing, just prints Collatz as side effect
+
 */
 
 void printCollatz(int n) {
@@ -56,14 +58,14 @@ value: the original price and the discount percentage
 return: float, the price after applying discount
 
 */
-void calculateDiscount(float price, float discount) {
+
+float calculateDiscount(float price, float discount) {
 
     float discountedPrice;
     discountedPrice = price * (100 - discount) / 100;
-    printf("After applying for the original price: $%.1f with the discount of: %.1f\n", price, discount);
-    printf("The discounted price is: $%.1f\n", discountedPrice);
+    return discountedPrice;
 
-}
+} // end calculateDiscount
 
 /*
 
@@ -75,9 +77,51 @@ The function check every number's value and their indices
 Count the number of integers in the list whose value is greater than index and return total
 
 */
-void greaterThanIndex(int arrayOfNumbers[], int size) {
-    
-}
 
+int greaterThanIndex(int arrayOfNumbers[], int size) {
+
+    int count = 0;
+
+    for (int i = 0; i < size; i++) {
+        if (arrayOfNumbers[i] > i) {
+            count++;
+        }
+    }
+
+    return count;
+
+} // end greaterThanIndex
+
+/*
+
+function sumOfDigits(n)
+takes: an integer n
+return: int, the sum of the digits of its digits (also an integer)
+assume n is positive integer
+
+*/
+
+int sumOfDigits(int n) {
+
+    int sum = 0;
+    while (n > 0) {
+        sum += n % 10;
+        n = n / 10;
+    }
+    return sum;
+
+} // end sumOfDigits
+
+/*
+
+function grader(avg_exams, avg_hw, attendance)
+takes: 2 floats avg_exams and avg_hw and 1 integer attendance 
+return: nothing, prints pass or fail based on the criteria
+the function uses student grades and attendance to decide student pass or fail
+ - attendance must be greater than 22
+ - avg_exams and avg_hw must both be greater than 75
+ - at least 1 of avg_exams or avg_hw must be greater than 80
+
+*/
 
 #endif
