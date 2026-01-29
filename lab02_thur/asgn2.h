@@ -1,5 +1,6 @@
 #ifndef __asgn2__
 #define __asgn2__
+#include <math.h>
 
 /* 
 
@@ -123,5 +124,41 @@ the function uses student grades and attendance to decide student pass or fail
  - at least 1 of avg_exams or avg_hw must be greater than 80
 
 */
+
+void grader(float avg_exams, float avg_hw, int attendance) {
+
+    if (attendance > 22 && avg_exams > 75 && avg_hw > 75 && (avg_exams > 80 || avg_hw > 80)) {
+        printf("Pass\n");
+    }
+
+    else {
+        printf("Fail\n");
+    }
+
+}
+
+/*
+
+function monthlyPayment(principal, rate, years)
+takes: 3 positive floats values
+ - principal: the principal amount of a loan
+ - rate: annual interest rate
+ - years: number of years for the loan
+return: float, the monthly payment amount using the formula for a fixed-rate mortgage
+
+*/
+
+float monthlyPayment(float principal, float rate, float years) {
+
+    float P = principal;
+    float r = rate / 100 / 12;
+    float n = years * 12;
+    float M;
+
+    M = (P * r * (pow(1 + r, n))) / (pow(1 + r, n) - 1);
+
+    return M;
+
+}
 
 #endif

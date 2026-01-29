@@ -27,7 +27,15 @@ int main() {
     int number = 123456;
     printf("The sum of digits of %d: %d\n", number, sumOfDigits(number));
 
+    // test grader
+    grader(76, 88, 25);
+    grader(66, 100, 24);
+    grader(100, 90, 18);
 
+    // test monthlyPayment
+    printf("%.2f\n", monthlyPayment(100000, 3.5, 30));
+    printf("%.2f\n", monthlyPayment(250000, 4.0, 15));
+    printf("%.2f\n", monthlyPayment(50000, 5.0, 10));
     
     return 0;
     
