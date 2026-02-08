@@ -10,3 +10,14 @@ int main() {
 
     return 0;
 }
+
+/*
+
+What is the answer?
+    a. error    
+    b. 14
+    c. 15
+    d. 16
+    e. Something else ____
+
+*/
