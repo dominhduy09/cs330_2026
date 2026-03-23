@@ -25,14 +25,14 @@ main:							# main function entry point
 	movq	%rax, -8(%rbp)		# save stack canary
 	xorl	%eax, %eax			# clear eax for later use
 
-	// Initialize the array with values 1 to 5
+	# Initialize the array with values 1 to 5
 	movl	$1, -32(%rbp)		# arr[0] = 1
 	movl	$2, -28(%rbp)		# arr[1] = 2
 	movl	$3, -24(%rbp)		# arr[2] = 3
 	movl	$4, -20(%rbp)		# arr[3] = 4
 	movl	$5, -16(%rbp)		# arr[4] = 5
 
-	// Pointer ptr = arr;
+	# Pointer ptr = arr;
 	leaq	-32(%rbp), %rax		# load address of arr into rax
 	movq	%rax, -40(%rbp)		# ptr stored at -40(%rbp)
 
@@ -42,7 +42,7 @@ main:							# main function entry point
 
 # LOOP 1: square each element in the array
 .L3:							# loop body: ptr[i] = ptr[i] * ptr[i];
-	// calculate ptr[i]
+	# calculate ptr[i]
 	movl	-48(%rbp), %eax		# eax = i
 	cltq						# convert i to 64-bit
 	leaq	0(,%rax,4), %rdx	# rdx = i * 4 (size of int)
@@ -68,12 +68,12 @@ main:							# main function entry point
 	movl	%eax, (%rcx)		# store the result back to ptr[i]
 	addl	$1, -48(%rbp)		# i++
 .L2:							# loop condition: i < 5
-	// loop condition: i < 5
+	# loop condition: i < 5
 	cmpl	$4, -48(%rbp)		# compare i with 4 (since we want to loop while i < 5)
 	jle	.L3						# if i <= 4, jump to loop body
 	
-// LOOP 2: print each element in the array
-	// reset i for the next loop
+# LOOP 2: print each element in the array
+	# reset i for the next loop
 	movl	$0, -44(%rbp)		# i = 0 for the next loop
 	jmp	.L4						# jump to the start of the next loop
 .L5:							# loop body: printf("%d \n", ptr[i]);
@@ -96,10 +96,10 @@ main:							# main function entry point
 .L4:							# loop condition: i < 5
 	cmpl	$4, -44(%rbp)		# compare i with 4 (since we want to loop while i < 5)
 	jle	.L5						# if i <= 4, jump to loop body
-// return 0 from main
+# return 0 from main
 	movl	$0, %eax			# return 0
 	
-	// stack canary check before returning
+	# stack canary check before returning
 	movq	-8(%rbp), %rdx		# load stack canary into rdx
 	subq	%fs:40, %rdx		# compare with original stack canary
 	je	.L7						# if they match, jump to return
