@@ -130,10 +130,43 @@ returns an int to represent whether this move is valid:
             push star into goal,
             push star off goal
 */
+
+// Note: this function is called when the user inputs a move, to check if it's valid before we move the player
 int validMove(int direction, Player *p, int *map){
-    /* === TO DO === */
-    return 0;
-}  // end validMove
+    int newX = p->x + dX[direction];    // this is the new player position if they move in the direction they input
+    int newY = p->y + dY[direction];    // this is the new player position if they move in the direction they input
+
+    // Out of bounds
+    if(newX < 0 || newX >= MAP_COLS || newY < 0 || newY >= MAP_ROWS){   // if the new position is out of bounds, it's not a valid move
+        return 0;   // note: we don't need to check the current position since the player is always in bounds, and they can only move one square at a time, so if the new position is out of bounds, it's not a valid move
+    }
+
+    int next = *((map + newY * MAP_COLS) + newX);   // this is the value of the square in the new position, which we need to check to see if it's a valid move
+
+    // Wall
+    if(next == 1){  // if the new position is a wall, it's not a valid move
+        return 0;   // note: we don't need to check the current position since the player can always move off of a wall, and they can only move one square at a time, so if the new position is a wall, it's not a valid move
+    }
+
+    // Star or star on goal
+    if(next == 3 || next == 5){     // if the new position is a star or star on goal, we need to check if we can push it
+        int pushX = newX + dX[direction];   // this is the position the star would be pushed to if we move in the direction we input
+        int pushY = newY + dY[direction];   // this is the position the star would be pushed to if we move in the direction we input
+
+        if(pushX < 0 || pushX >= MAP_COLS || pushY < 0 || pushY >= MAP_ROWS){   // if the position the star would be pushed to is out of bounds, it's not a valid move
+            return 0;   // note: we don't need to check the current position since the player is always in bounds, and they can only move one square at a time, so if the position the star would be pushed to is out of bounds, it's not a valid move
+        }
+
+        int beyond = *((map + pushY * MAP_COLS) + pushX);   // this is the value of the square in the position the star would be pushed to, which we need to check to see if it's a valid move
+
+        // Can't push into wall or another star
+        if(beyond == 1 || beyond == 3 || beyond == 5){  // if the position the star would be pushed to is a wall, star, or star on goal, it's not a valid move
+            return 0;   // note: we don't need to check the current position since the player can always move off of a wall, and they can only move one square at a time, so if the position the star would be pushed to is a wall, star, or star on goal, it's not a valid move
+        }
+    }
+
+    return 1;   // if we haven't returned 0 by now, it's a valid move
+}
 
 
 /* function won't be called unless we know it's a valid move
@@ -152,11 +185,65 @@ takes direction (of move), Player, and map
         (2.d) pushes star off goal and onto another goal
 returns: nothing
 */
-void movePlayer(int direction, Player *p, int *map){
-    /* === TO DO === */
 
-    return;
-}  // end movePlayer()
+// Note: this function is called after we check that the move is valid, to update the map and player position
+void movePlayer(int direction, Player *p, int *map){    // we know this is a valid move, so we just need to update the map and player position
+
+    int oldX = p->x;    // this is the current player position, which we need to update the map to reflect the player moving off of this square
+    int oldY = p->y;    // this is the current player position, which we need to update the map to reflect the player moving off of this square
+
+    int newX = oldX + dX[direction];    // this is the new player position, which we need to update the map to reflect the player moving onto this square
+    int newY = oldY + dY[direction];    // this is the new player position, which we need to update the map to reflect the player moving onto this square
+
+    int *current = (map + oldY * MAP_COLS) + oldX;  // this is the value of the square the player is currently on, which we need to check to see if we need to restore a goal when the player moves off of it
+    int *next = (map + newY * MAP_COLS) + newX;     // this is the value of the square the player is moving onto, which we need to check to see if it's a star that needs to be pushed, and to update it to reflect the player moving onto it
+
+    // ===== PUSHING STAR =====
+    if(*next == 3 || *next == 5){   // if the player is moving onto a star or star on goal, we need to push it
+        int pushX = newX + dX[direction];   // this is the position the star is being pushed to, which we need to update the map to reflect the star moving onto it
+        int pushY = newY + dY[direction];   // this is the position the star is being pushed to, which we need to update the map to reflect the star moving onto it
+
+        int *beyond = (map + pushY * MAP_COLS) + pushX;     // this is the value of the square the star is being pushed to, which we need to check to see if we need to update the number of stars solved, and to update it to reflect the star moving onto it
+
+        // star to goal
+        if(*beyond == 4){   // if the star is being pushed onto a goal, we need to update the number of stars solved and update the map to reflect the star on goal
+            *beyond = 5;    // update map to reflect star on goal
+            numStarsSolved++;   // update number of stars solved
+        }
+        else{
+            *beyond = 3;    // update map to reflect star on blank space
+        }
+
+        // star was on goal
+        if(*next == 5){     // if the star being pushed was on a goal, we need to update the number of stars solved and update the map to reflect the goal being uncovered
+            *next = 4;      // update map to reflect goal uncovered
+            numStarsSolved--;   // update number of stars solved
+        }
+        else{
+            *next = 0;   // update map to reflect star moved off of blank space
+        }
+    }
+
+    // ===== MOVE PLAYER =====
+    if(*current == 6){      // if the player is currently on a goal, we need to update the map to reflect the goal being uncovered when the player moves off of it
+        *current = 4;       // update map to reflect goal uncovered
+    }
+    else{
+        *current = 0;       // update map to reflect player moved off of blank space
+    }
+
+    if(*next == 4){         // if the player is moving onto a goal, we need to update the map to reflect the player on goal
+        *next = 6;          // update map to reflect player on goal
+    }
+    else{
+        *next = 2;          // update map to reflect player on blank space
+    }
+
+    p->x = newX;            // update player position
+    p->y = newY;            // update player position
+
+    NUM_STEPS++;            // update number of steps
+}
 
 /* ========== END TO DO FUNCTIONS ========== */
 
@@ -272,10 +359,9 @@ int main(){
         /* comment this section out and uncomment the section above
           NOTE:  There should be no TA_... in your code
         */
-        if (TA_validMove(delta, p, map)){
-            // move player (and star)
-            TA_movePlayer(delta, p, map);
-        }
+        if (delta != -1 && validMove(delta, p, map)){       // if the input is a valid direction and it's a valid move, move the player
+            movePlayer(delta, p, map);      // move player (and star)
+     }
         
 
         /* ======= END TO DO ======= */
